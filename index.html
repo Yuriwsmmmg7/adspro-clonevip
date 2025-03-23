@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdsPro - Clonar e Melhorar Páginas</title>
+    <title>Clonador e Otimizador de Páginas</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>AdsPro - Clonar e Otimizar Páginas de Vendas</h1>
-    
-    <label for="urlInput">URL da Página:</label>
-    <input type="text" id="urlInput" placeholder="Cole a URL da página aqui...">
+    <div class="container">
+        <h1>Clonador e Otimizador de Páginas</h1>
+        
+        <div class="section">
+            <h2>Clonar Página</h2>
+            <input type="text" id="cloneUrl" placeholder="Insira a URL da página para clonar">
+            <button onclick="clonarPagina()">Clonar Página</button>
+        </div>
 
-    <label for="originalCheckout">URL do Checkout Original:</label>
-    <input type="text" id="originalCheckout" placeholder="Cole o link de checkout da página...">
-
-    <label for="newCheckout">URL do Novo Checkout:</label>
-    <input type="text" id="newCheckout" placeholder="Cole seu novo link de checkout...">
-
-    <button id="clonePage">Clonar Página</button>
-    <button id="optimizeAI">Otimizar Página com IA</button>
+        <div class="section">
+            <h2>Otimizar Página</h2>
+            <input type="text" id="urlInput" placeholder="Insira a URL da página para otimizar">
+            <button onclick="otimizarPagina()">Otimizar Página</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
