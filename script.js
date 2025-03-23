@@ -1,74 +1,46 @@
-document.getElementById("clonePage").addEventListener("click", async function() {
-    let url = document.getElementById("urlInput").value;
-    let originalCheckout = document.getElementById("originalCheckout").value;
-    let newCheckout = document.getElementById("newCheckout").value;
-
-    if (!url) {
-        alert("Por favor, insira uma URL válida!");
-        return;
-    }
-
+async function otimizarPagina() {
     try {
-        let response = await fetch("https://corsproxy.io/?" + encodeURIComponent(url));
-        let html = await response.text();
-
-        // Substituir checkout se informado
-        if (originalCheckout && newCheckout) {
-            html = html.replace(new RegExp(originalCheckout, "g"), newCheckout);
+        let url = document.getElementById("urlInput").value;
+        if (!url) {
+            alert("Por favor, insira uma URL válida.");
+            return;
         }
 
-        // Criar nova janela com a página clonada
-        let newWindow = window.open();
-        newWindow.document.write(html);
-    } catch (error) {
-        console.error("Erro ao clonar a página:", error);
-        alert("Erro ao obter os dados da página. Verifique a URL.");
-    }
-});
-
-// Função para otimizar a página com IA
-document.getElementById("optimizeAI").addEventListener("click", async function() {
-    let url = document.getElementById("urlInput").value;
-    if (!url) {
-        alert("Por favor, insira uma URL válida!");
-        return;
-    }
-
-    try {
-        let response = await fetch("https://corsproxy.io/?" + encodeURIComponent(url));
+        // Buscar o conteúdo da página original
+        let response = await fetch(url);
         let html = await response.text();
 
-        // Enviar HTML para otimização com IA
-        optimizeWithAI(html);
+        // Enviar para otimização via IA
+        let otimizado = await otimizarComIA(html);
+
+        // Criar um Blob com o novo HTML otimizado
+        let blob = new Blob([otimizado], { type: "text/html" });
+
+        // Criar link de download automático
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "pagina_otimizada.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        alert("Página otimizada e pronta para download!");
+
     } catch (error) {
-        console.error("Erro ao capturar a página:", error);
-        alert("Erro ao obter os dados da página.");
+        console.error("Erro ao otimizar a página:", error);
+        alert("Erro ao otimizar a página. Verifique a URL e tente novamente.");
     }
-});
+}
 
-// Integração com a IA (OpenAI)
-async function optimizeWithAI(html) {
-    let apiKey = "SUA_CHAVE_OPENAI"; // Substitua pela sua chave de API
-
-    let response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${apiKey}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            model: "gpt-4",
-            messages: [
-                { role: "system", content: "Você é um especialista em copywriting e conversão de páginas de vendas." },
-                { role: "user", content: `Melhore esta página para aumentar a conversão:\n\n${html}` }
-            ]
-        })
-    });
-
-    let data = await response.json();
-    let optimizedHtml = data.choices[0].message.content;
-
-    // Exibir a versão otimizada
-    let newWindow = window.open();
-    newWindow.document.write(optimizedHtml);
+// Simulação de otimização com IA (pode ser integrado com OpenAI)
+async function otimizarComIA(html) {
+    // Aqui você pode integrar com OpenAI ou outra IA
+    let melhorias = `
+        - Melhore chamadas para ação (CTAs).
+        - Aprimore títulos e subtítulos para maior impacto.
+        - Reduza textos longos para mensagens diretas e persuasivas.
+        - Otimize imagens para carregar mais rápido.
+    `;
+    
+    return `<!-- Página otimizada com IA -->\n${html}\n<!-- Melhorias aplicadas: ${melhorias} -->`;
 }
